@@ -12,6 +12,15 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
+  components: {
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backdropFilter: "blur(2px)"
+        }
+      }
+    }
+  }
 });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

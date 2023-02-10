@@ -2,9 +2,11 @@ import { useCallback, useState } from "react";
 import { Box, Card, Fab, Modal } from "@mui/material";
 import FlagIcon from "@mui/icons-material/Flag";
 import CalendarIcon from "@mui/icons-material/CalendarMonth";
+import MoneyIcon from "@mui/icons-material/AttachMoney";
 
 import AddAward from "../awards/AddAward";
 import ScheduleSettings from "../schedule/ScheduleSettings";
+import IncomeSettings from "../income/IncomeSettings";
 
 const Actions = () => {
   const [isAddAwardOpen, setAddAwardOpen] = useState(false);
@@ -16,6 +18,7 @@ const Actions = () => {
     () => setAddAwardOpen(false),
     [setAddAwardOpen]
   );
+
   const [isScheduleOpen, setScheduleOpen] = useState(false);
   const openSchedule = useCallback(
     () => setScheduleOpen(true),
@@ -26,16 +29,31 @@ const Actions = () => {
     [setScheduleOpen]
   );
 
+  const [isIncomeSettingsOpen, setIncomeSettingsOpen] = useState(false);
+  const openIncomeSettings = useCallback(
+    () => setIncomeSettingsOpen(true),
+    [setIncomeSettingsOpen]
+  );
+  const closeIncomeSettings = useCallback(
+    () => setIncomeSettingsOpen(false),
+    [setIncomeSettingsOpen]
+  );
+
   return (
     <>
-      <Modal onClose={closeAddAward} open={isAddAwardOpen} >
-        <Card sx={{ m: 1, p: 1 }}>
+      <Modal onClose={closeAddAward} open={isAddAwardOpen}>
+        <Card sx={{ m: 1, p: 1, position: "absolute", bottom: 72, right: 0, left: 0 }}>
           <AddAward />
         </Card>
       </Modal>
       <Modal onClose={closeSchedule} open={isScheduleOpen}>
-        <Card sx={{ m: 1, p: 1 }}>
+        <Card sx={{ m: 1, p: 1, position: "absolute", bottom: 72, right: 0, left: 0 }}>
           <ScheduleSettings />
+        </Card>
+      </Modal>
+      <Modal onClose={closeIncomeSettings} open={isIncomeSettingsOpen}>
+        <Card sx={{ m: 1, p: 1, position: "absolute", bottom: 72, right: 0, left: 0 }}>
+          <IncomeSettings />
         </Card>
       </Modal>
       <Box
@@ -50,18 +68,23 @@ const Actions = () => {
         <Fab
           onClick={openAddAward}
           color="primary"
-          variant="extended"
-          aria-label="add"
+          aria-label="dodaj cel"
         >
-          <FlagIcon sx={{ mr: 1 }} /> Dodaj cel
+          <FlagIcon />
         </Fab>
         <Fab
           onClick={openSchedule}
           color="primary"
-          variant="extended"
-          aria-label="add"
+          aria-label="harmonogram"
         >
-          <CalendarIcon sx={{ mr: 1 }} /> Harmonogram
+          <CalendarIcon />
+        </Fab>
+        <Fab
+          onClick={openIncomeSettings}
+          color="primary"
+          aria-label="dochód"
+        >
+          <MoneyIcon />
         </Fab>
       </Box>
     </>
