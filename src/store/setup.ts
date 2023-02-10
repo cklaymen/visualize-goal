@@ -1,9 +1,9 @@
 import { Store as StoreClass, createUseStore } from "./core";
-import { Award, IncomeSettings } from "./models";
+import { Award, ScheduleSettings } from "./models";
 
 export interface StoreValue {
   awards: Array<Award>;
-  incomeSettings?: IncomeSettings;
+  scheduleSettings?: ScheduleSettings;
 }
 
 const LS_CACHE_KEY = "store_cache";

@@ -1,2 +1,2 @@
 export type { Award } from "./award";
-export type { IncomeSettings } from "./incomeSettings";
+export type { ScheduleSettings } from "./scheduleSettings";

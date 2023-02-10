@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import { Box, Card, Fab, Modal } from "@mui/material";
 import FlagIcon from "@mui/icons-material/Flag";
-import MoneyIcon from "@mui/icons-material/AttachMoney";
+import CalendarIcon from "@mui/icons-material/CalendarMonth";
 
 import AddAward from "../awards/AddAward";
-import AddIncome from "../income/AddIncome";
+import ScheduleSettings from "../schedule/ScheduleSettings";
 
 const Actions = () => {
   const [isAddAwardOpen, setAddAwardOpen] = useState(false);
@@ -16,26 +16,26 @@ const Actions = () => {
     () => setAddAwardOpen(false),
     [setAddAwardOpen]
   );
-  const [isMoneySourceOpen, setMoneySourceOpen] = useState(false);
-  const openMoneySource = useCallback(
-    () => setMoneySourceOpen(true),
-    [setMoneySourceOpen]
+  const [isScheduleOpen, setScheduleOpen] = useState(false);
+  const openSchedule = useCallback(
+    () => setScheduleOpen(true),
+    [setScheduleOpen]
   );
-  const closeMoneySource = useCallback(
-    () => setMoneySourceOpen(false),
-    [setMoneySourceOpen]
+  const closeSchedule = useCallback(
+    () => setScheduleOpen(false),
+    [setScheduleOpen]
   );
 
   return (
     <>
-      <Modal onClose={closeAddAward} open={isAddAwardOpen}>
+      <Modal onClose={closeAddAward} open={isAddAwardOpen} >
         <Card sx={{ m: 1, p: 1 }}>
           <AddAward />
         </Card>
       </Modal>
-      <Modal onClose={closeMoneySource} open={isMoneySourceOpen}>
+      <Modal onClose={closeSchedule} open={isScheduleOpen}>
         <Card sx={{ m: 1, p: 1 }}>
-          <AddIncome />
+          <ScheduleSettings />
         </Card>
       </Modal>
       <Box
@@ -56,12 +56,12 @@ const Actions = () => {
           <FlagIcon sx={{ mr: 1 }} /> Dodaj cel
         </Fab>
         <Fab
-          onClick={openMoneySource}
+          onClick={openSchedule}
           color="primary"
           variant="extended"
           aria-label="add"
         >
-          <MoneyIcon sx={{ mr: 1 }} /> Dodaj PLN
+          <CalendarIcon sx={{ mr: 1 }} /> Harmonogram
         </Fab>
       </Box>
     </>

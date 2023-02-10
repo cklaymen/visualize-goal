@@ -2,23 +2,23 @@ import { Box, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 import {
-  IncomeSettings,
+  ScheduleSettings as ScheduleSettingsData,
   incomeSettingsService,
   useStore,
 } from "../../../store";
 
-function onSubmit(incomeSettings: IncomeSettings) {
-  incomeSettingsService.set(incomeSettings);
+function onSubmit(scheduleSettings: ScheduleSettingsData) {
+  incomeSettingsService.set(scheduleSettings);
 }
 
-const AddIncome: React.FC = () => {
-  const incomeSettings = useStore((store) => store.incomeSettings);
-  const { register, handleSubmit } = useForm<IncomeSettings>({
-    defaultValues: incomeSettings,
+const ScheduleSettings: React.FC = () => {
+  const scheduleSettings = useStore((store) => store.scheduleSettings);
+  const { register, handleSubmit } = useForm<ScheduleSettingsData>({
+    defaultValues: scheduleSettings,
   });
-  
+
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} display="grid" gap={1}>
       <Box display="flex" gap={1}>
         <TextField
           type="date"
@@ -48,9 +48,8 @@ const AddIncome: React.FC = () => {
       <Button type="submit" variant="contained">
         Ustaw
       </Button>
-      {JSON.stringify(incomeSettings)}
     </Box>
   );
 };
 
-export default AddIncome;
+export default ScheduleSettings;
