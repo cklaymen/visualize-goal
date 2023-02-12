@@ -1,31 +1,30 @@
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useStore } from "../../../../store";
 
-import getWorkedTime from "./helpers/getWorkedTime";
+import {
+  getPastDaysWorkedTime,
+  getTodayWorkedTime,
+} from "./helpers/getWorkedTime";
 
 const useWorkedTime = (updateIntervalInMs = 1000) => {
   const scheduleSettings = useStore((value) => value.scheduleSettings);
-  const [workedHours, setWorkedHours] = useState<number>();
+  const [todayWorkedTime, setTodayWorkedTime] = useState<number>(
+    getTodayWorkedTime()
+  );
+  const pastDaysWorkedTime = useMemo(
+    () => getPastDaysWorkedTime(scheduleSettings),
+    [scheduleSettings]
+  );
 
   useEffect(() => {
-    if (!scheduleSettings) {
-      return undefined;
-    }
-    function updateWorkedHours() {
-      const currentWorkedHours = getWorkedTime(
-        dayjs(scheduleSettings!.firstDayDate, "YYYY-MM-DD"),
-        scheduleSettings!.startTime,
-        scheduleSettings!.endTime
-      );
-      setWorkedHours(currentWorkedHours);
-    }
-    const t = setInterval(updateWorkedHours, updateIntervalInMs);
+    const t = setInterval(() => {
+      setTodayWorkedTime(getTodayWorkedTime(scheduleSettings));
+    }, updateIntervalInMs);
     return () => clearInterval(t);
   }, [scheduleSettings, updateIntervalInMs]);
 
-  return workedHours;
+  return pastDaysWorkedTime + todayWorkedTime;
 };
 
 export default useWorkedTime;
