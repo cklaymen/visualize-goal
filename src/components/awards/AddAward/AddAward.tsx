@@ -6,7 +6,8 @@ import { Award, awardsService } from "../../../store";
 type AwardProps = Omit<Award, "id">;
 
 function onSubmit(award: AwardProps) {
-  awardsService.add(award);
+  console.log(award);
+  // awardsService.add(award);
 }
 
 const AddAward: React.FC = () => {
@@ -27,7 +28,7 @@ const AddAward: React.FC = () => {
           endAdornment: <InputAdornment position="end">PLN</InputAdornment>,
         }}
         inputProps={{ step: "0.01" }}
-        {...register("cost")}
+        {...register("cost", { valueAsNumber: true })}
       />
       <TextField label="Obrazek" placeholder="URL" {...register("imageUrl")} />
       <Button type="submit" variant="contained">

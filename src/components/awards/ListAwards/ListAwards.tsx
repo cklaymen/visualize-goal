@@ -4,6 +4,7 @@ import { useStore } from "../../../store";
 
 const ListAwards: React.FC = () => {
   const awards = useStore((value) => value.awards);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", padding: 0 }}>
       {awards.map((award, i) => (

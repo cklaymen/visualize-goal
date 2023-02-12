@@ -24,10 +24,10 @@ const IncomeSettings: React.FC = () => {
 
             <TextField label="Stawka NETTO" type="number" InputProps={{
                 endAdornment: <InputAdornment position="end">PLN/H</InputAdornment>
-            }} inputProps={{ step: "0.01" }} {...register("hourlyRate")} />
+            }} inputProps={{ step: "0.01" }} {...register("hourlyRate", { valueAsNumber: true })} />
             <TextField label="Podatek" type="number" InputProps={{
                 endAdornment: <InputAdornment position="end">%</InputAdornment>
-            }} {...register("tax")} />
+            }} {...register("tax", { valueAsNumber: true })} />
         </Stack>
         <Button variant="contained" type="submit">Zapisz</Button>
         <Snackbar open={feedback} onClose={() => showFeedback(false)} autoHideDuration={2000}><Alert severity="success">Zapisano!</Alert></Snackbar>
