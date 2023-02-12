@@ -20,10 +20,10 @@ const useIncome = (): ReturnValue | null => {
   }, [incomeSettings]);
   const updateTimeIntervalInMs = useMemo(
     () =>
-      incomeSettings
-        ? (1 * 60 * 60 * 1000) / (incomeSettings.hourlyRate * 100)
+      taxedHourlyRate
+        ? (1 * 60 * 60 * 1000) / (taxedHourlyRate * 100)
         : undefined,
-    [incomeSettings]
+    [taxedHourlyRate]
   );
   const workedTime = useWorkedTime(updateTimeIntervalInMs);
 
