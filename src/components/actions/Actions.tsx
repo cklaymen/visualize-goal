@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Box, Card, Fab, Modal } from "@mui/material";
+import { Box, Card, Fab, Modal, SxProps, Theme } from "@mui/material";
 import FlagIcon from "@mui/icons-material/Flag";
 import CalendarIcon from "@mui/icons-material/CalendarMonth";
 import MoneyIcon from "@mui/icons-material/AttachMoney";
@@ -7,6 +7,8 @@ import MoneyIcon from "@mui/icons-material/AttachMoney";
 import AddAward from "../awards/AddAward";
 import ScheduleSettings from "../schedule/ScheduleSettings";
 import IncomeSettings from "../income/IncomeSettings";
+
+const cardSx: SxProps<Theme> = theme => ({ m: 1, p: 1, position: "absolute", bottom: 72, right: 0, maxWidth: `calc(100% - 2 * ${theme.spacing(1)})` })
 
 const Actions = () => {
   const [isAddAwardOpen, setAddAwardOpen] = useState(false);
@@ -42,17 +44,17 @@ const Actions = () => {
   return (
     <>
       <Modal onClose={closeAddAward} open={isAddAwardOpen}>
-        <Card sx={{ m: 1, p: 1, position: "absolute", bottom: 72, right: 0, left: 0 }}>
+        <Card sx={cardSx}>
           <AddAward />
         </Card>
       </Modal>
-      <Modal onClose={closeSchedule} open={isScheduleOpen}>
-        <Card sx={{ m: 1, p: 1, position: "absolute", bottom: 72, right: 0, left: 0 }}>
+      <Modal onClose={closeSchedule} open={isScheduleOpen} >
+        <Card sx={cardSx}>
           <ScheduleSettings />
         </Card>
       </Modal>
       <Modal onClose={closeIncomeSettings} open={isIncomeSettingsOpen}>
-        <Card sx={{ m: 1, p: 1, position: "absolute", bottom: 72, right: 0, left: 0 }}>
+        <Card sx={cardSx}>
           <IncomeSettings />
         </Card>
       </Modal>

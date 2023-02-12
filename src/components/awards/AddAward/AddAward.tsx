@@ -1,23 +1,27 @@
-import { Box, Button, InputAdornment, TextField } from "@mui/material";
+import { Alert, Box, Button, InputAdornment, Snackbar, TextField } from "@mui/material";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Award, awardsService } from "../../../store";
 
 type AwardProps = Omit<Award, "id">;
 
-function onSubmit(award: AwardProps) {
-  awardsService.add(award);
-}
-
 const AddAward: React.FC = () => {
-  const { register, handleSubmit } = useForm<AwardProps>();
+  const [feedback, showFeedback] = useState(false);
+  const { register, handleSubmit, reset } = useForm<AwardProps>();
+
+  const addAward = useCallback((award: AwardProps) => {
+    awardsService.add(award);
+    showFeedback(true);
+    reset()
+  }, [reset])
 
   return (
     <Box
       component="form"
       display="grid"
       gap={1}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(addAward)}
     >
       <TextField label="Tytuł" {...register("title")} />
       <TextField
@@ -33,6 +37,7 @@ const AddAward: React.FC = () => {
       <Button type="submit" variant="contained">
         Dodaj
       </Button>
+      <Snackbar open={feedback} onClose={() => showFeedback(false)} autoHideDuration={2000}><Alert severity="success">Dodano cel!</Alert></Snackbar>
     </Box>
   );
 };

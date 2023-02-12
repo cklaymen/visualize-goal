@@ -1,15 +1,15 @@
 import { ScheduleSettings } from "../models";
 import { store, Store } from "../setup";
 
-class ScheduleSettingsService {
+class ScheduleService {
   constructor(private store: Store) {}
 
-  set(incomeSettings: ScheduleSettings) {
+  changeSettings(scheduleSettings: ScheduleSettings) {
     this.store.setValue((value) => ({
       ...value,
-      scheduleSettings: incomeSettings,
+      scheduleSettings,
     }));
   }
 }
 
-export const scheduleSettingsService = new ScheduleSettingsService(store);
+export const scheduleService = new ScheduleService(store);
