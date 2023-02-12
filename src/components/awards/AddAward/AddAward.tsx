@@ -6,8 +6,7 @@ import { Award, awardsService } from "../../../store";
 type AwardProps = Omit<Award, "id">;
 
 function onSubmit(award: AwardProps) {
-  console.log(award);
-  // awardsService.add(award);
+  awardsService.add(award);
 }
 
 const AddAward: React.FC = () => {
