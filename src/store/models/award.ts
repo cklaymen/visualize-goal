@@ -1,4 +1,4 @@
-type Money = number;
+import { Money } from "./common";
 
 export interface Award {
   id: number;

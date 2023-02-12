@@ -46,7 +46,7 @@ const ScheduleSettings: React.FC = () => {
         />
       </Box>
       <Button type="submit" variant="contained">
-        Ustaw
+        Zapisz
       </Button>
     </Box>
   );
