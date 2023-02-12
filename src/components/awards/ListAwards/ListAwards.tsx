@@ -1,38 +1,25 @@
-import { alpha, Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
-import { useStore } from "../../../store";
+import { Award, useStore } from "../../../store";
+import { Money } from "../../../store/models/common";
+import useIncome from "../../income/Income/useIncome";
+
+import ListItem from "./ListItem";
+
+function getCoveredCost(income: Money, awards: Award[], index: number): Money {
+  const previousAwardsCost = awards.slice(0, index).reduce((a, b) => a + b.cost, 0)
+  return Math.max(0, income - previousAwardsCost);
+}
 
 const ListAwards: React.FC = () => {
   const awards = useStore((value) => value.awards);
+  const income = useIncome();
+  const taxedIncome = income?.taxed;
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", padding: 0 }}>
       {awards.map((award, i) => (
-        <Box
-          key={award.id}
-          sx={{
-            backgroundImage: `url('${award.imageUrl}')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            flex: awards.length - i,
-            height: "unset",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "end",
-          }}
-        >
-          <Box
-            sx={(theme) => ({
-              backgroundColor: alpha(theme.palette.background.default, 0.5),
-              backdropFilter: "blur(2px)",
-              px: 2,
-              py: 1,
-            })}
-          >
-            <Typography variant="caption">{award.cost} PLN</Typography>
-            <Typography variant="subtitle2">{award.title}</Typography>
-          </Box>
-        </Box>
+        <ListItem key={award.id} award={award} flexGrow={awards.length - i} coveredCost={taxedIncome ? getCoveredCost(taxedIncome, awards, i) : 0} />
       ))}
     </Box>
   );
