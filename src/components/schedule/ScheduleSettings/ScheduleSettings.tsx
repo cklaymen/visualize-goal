@@ -1,6 +1,7 @@
-import { Button, Stack, TextField } from "@mui/material";
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { Button, Stack, TextField } from "@mui/material";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   ScheduleSettings as ScheduleSettingsData,
@@ -8,17 +9,19 @@ import {
   useStore,
 } from "../../../store";
 import { useNotification } from "../../notification";
+import dayjs, { Dayjs } from "dayjs";
 
 const ScheduleSettings: React.FC = () => {
   const scheduleSettings = useStore((store) => store.scheduleSettings);
-  const { register, handleSubmit } = useForm<ScheduleSettingsData>({
+  const { handleSubmit, control } = useForm<ScheduleSettingsData>({
     defaultValues: scheduleSettings,
   });
   const { showFeedback } = useNotification();
 
   const changeSettings = useCallback(
     (scheduleSettings: ScheduleSettingsData) => {
-      scheduleService.changeSettings(scheduleSettings);
+      console.log(scheduleSettings);
+      // scheduleService.changeSettings(scheduleSettings);
       showFeedback({ message: "Zapisano!" });
     },
     []
@@ -26,35 +29,50 @@ const ScheduleSettings: React.FC = () => {
 
   return (
     <Stack component="form" onSubmit={handleSubmit(changeSettings)} gap={1}>
-      <Stack gap={1} direction="row">
-        <TextField
-          sx={{
-            minWidth: "8em",
-          }}
-          type="date"
-          label="Data rozpoczęcia"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...register("firstDayDate")}
+      <Stack gap={1} direction="column">
+        <Controller
+          control={control}
+          name="firstDayDate"
+          render={({ field }) => (
+            <DatePicker
+              label="Data rozpoczęcia"
+              inputFormat="YYYY-MM-DD"
+              renderInput={(params) => <TextField {...params} />}
+              {...field}
+            />
+          )}
         />
-        <TextField
-          sx={{ minWidth: "5em" }}
-          type="time"
-          label="Start"
-          InputLabelProps={{
-            shrink: true,
+        <Controller
+          control={control}
+          name="startTime"
+          render={({ field: { onChange, value, ...restField } }) => {
+            return (
+              <TimePicker
+                label="Start"
+                inputFormat="HH:mm"
+                ampm={false}
+                renderInput={(params) => <TextField {...params} />}
+                onChange={(newValue) => onChange(newValue?.format("HH:mm"))}
+                value={dayjs(value, "HH:mm")}
+                {...restField}
+              />
+            );
           }}
-          {...register("startTime")}
         />
-        <TextField
-          sx={{ minWidth: "5em" }}
-          type="time"
-          label="Koniec"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...register("endTime")}
+        <Controller
+          control={control}
+          name="endTime"
+          render={({ field: { onChange, value, ...restField } }) => (
+            <TimePicker<Dayjs>
+              label="Koniec"
+              inputFormat="HH:mm"
+              ampm={false}
+              renderInput={(params) => <TextField {...params} />}
+              onChange={(newValue) => onChange(newValue?.format("HH:mm"))}
+              value={dayjs(value, "HH:mm")}
+              {...restField}
+            />
+          )}
         />
       </Stack>
       <Button type="submit" variant="contained">
