@@ -23,7 +23,7 @@ const IncomeSettings: React.FC = () => {
 
   return (
     <Stack component="form" onSubmit={handleSubmit(changeSettings)} gap={1}>
-      <Stack direction="row" gap={1}>
+      <Stack direction="column" gap={1}>
         <TextField
           label="Stawka NETTO"
           type="number"
@@ -31,7 +31,7 @@ const IncomeSettings: React.FC = () => {
             endAdornment: <InputAdornment position="end">PLN/H</InputAdornment>,
           }}
           inputProps={{ step: "0.01" }}
-          {...register("hourlyRate", { valueAsNumber: true })}
+          {...register("hourlyRate", { valueAsNumber: true, required: true })}
         />
         <TextField
           label="Podatek"
@@ -39,7 +39,16 @@ const IncomeSettings: React.FC = () => {
           InputProps={{
             endAdornment: <InputAdornment position="end">%</InputAdornment>,
           }}
-          {...register("tax", { valueAsNumber: true })}
+          {...register("tax", { valueAsNumber: true, required: true })}
+        />
+        <TextField
+          label="Kapitał początkowy"
+          type="number"
+          InputProps={{
+            endAdornment: <InputAdornment position="end">PLN</InputAdornment>,
+          }}
+          inputProps={{ step: "0.01" }}
+          {...register("capital", { valueAsNumber: true, required: true })}
         />
       </Stack>
       <Button variant="contained" type="submit">
