@@ -8,15 +8,20 @@ import useWorkedHours from "./useWorkedTime";
 dayjs.extend(duration);
 
 const WorkedTime: React.FC = () => {
-    const workedTime = useWorkedHours()
+  const workedTime = useWorkedHours();
 
-    if (!workedTime) {
-        return null;
-    }
+  if (!workedTime) {
+    return null;
+  }
 
-    const workDuration = dayjs.duration(workedTime)
+  const workDuration = dayjs.duration(workedTime);
 
-    return <Box>{Math.floor(workDuration.asHours())} godzin, {workDuration.minutes()} minut, {workDuration.seconds()} sekund</Box>
-}
+  return (
+    <Box p={1} pb={0} display="flex" alignItems="center">
+      {Math.floor(workDuration.asHours())} godzin, {workDuration.minutes()}{" "}
+      minut, {workDuration.seconds()} sekund
+    </Box>
+  );
+};
 
 export default WorkedTime;
