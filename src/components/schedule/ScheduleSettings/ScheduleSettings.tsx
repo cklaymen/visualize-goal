@@ -28,12 +28,34 @@ const ScheduleSettings: React.FC = () => {
     <Stack component="form" onSubmit={handleSubmit(changeSettings)} gap={1}>
       <Stack gap={1} direction="row">
         <TextField
+          sx={{
+            minWidth: "8em",
+          }}
           type="date"
           label="Data rozpoczęcia"
+          InputLabelProps={{
+            shrink: true,
+          }}
           {...register("firstDayDate")}
         />
-        <TextField type="time" label="Start" {...register("startTime")} />
-        <TextField type="time" label="Koniec" {...register("endTime")} />
+        <TextField
+          sx={{ minWidth: "5em" }}
+          type="time"
+          label="Start"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...register("startTime")}
+        />
+        <TextField
+          sx={{ minWidth: "5em" }}
+          type="time"
+          label="Koniec"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...register("endTime")}
+        />
       </Stack>
       <Button type="submit" variant="contained">
         Zapisz

@@ -12,6 +12,7 @@ import { NotificationProvider } from "./components/notification";
 
 const darkTheme = createTheme({
   palette: {
+    primary: { main: "#FFCB05" },
     mode: "dark",
   },
   components: {
