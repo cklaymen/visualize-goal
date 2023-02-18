@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      registerType: "autoUpdate",
       base: "/",
       includeAssets: ["erys.svg", "erys-512x512.png"],
       manifest: {
