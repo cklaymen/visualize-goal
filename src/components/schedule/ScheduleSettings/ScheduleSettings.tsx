@@ -30,27 +30,10 @@ const ScheduleSettings: React.FC = () => {
         <TextField
           type="date"
           label="Data rozpoczęcia"
-          InputLabelProps={{
-            shrink: true,
-          }}
           {...register("firstDayDate")}
         />
-        <TextField
-          type="time"
-          label="Start"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...register("startTime")}
-        />
-        <TextField
-          type="time"
-          label="Koniec"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...register("endTime")}
-        />
+        <TextField type="time" label="Start" {...register("startTime")} />
+        <TextField type="time" label="Koniec" {...register("endTime")} />
       </Stack>
       <Button type="submit" variant="contained">
         Zapisz
