@@ -7,8 +7,11 @@ import useIncome from "../../income/Income/useIncome";
 import ListItem from "./ListItem";
 
 function getCoveredCost(income: Money, awards: Award[], index: number): Money {
-  const previousAwardsCost = awards.slice(0, index).reduce((a, b) => a + b.cost, 0)
-  return Math.max(0, income - previousAwardsCost);
+  const award = awards[index];
+  const previousAwardsCost = awards
+    .slice(0, index)
+    .reduce((a, b) => a + b.cost, 0);
+  return Math.min(Math.max(0, income - previousAwardsCost), award.cost);
 }
 
 const ListAwards: React.FC = () => {
@@ -19,7 +22,13 @@ const ListAwards: React.FC = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", padding: 0 }}>
       {awards.map((award, i) => (
-        <ListItem key={award.id} award={award} flexGrow={awards.length - i} coveredCost={taxedIncome ? getCoveredCost(taxedIncome, awards, i) : 0} />
+        <ListItem
+          key={award.id}
+          award={award}
+          awardIndex={i}
+          awardsLength={awards.length}
+          coveredCost={taxedIncome ? getCoveredCost(taxedIncome, awards, i) : 0}
+        />
       ))}
     </Box>
   );
