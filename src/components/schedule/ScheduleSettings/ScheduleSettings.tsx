@@ -1,5 +1,5 @@
-import { Alert, Button, Snackbar, Stack, TextField } from "@mui/material";
-import { useCallback, useState } from "react";
+import { Button, Stack, TextField } from "@mui/material";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -7,24 +7,30 @@ import {
   scheduleService,
   useStore,
 } from "../../../store";
-
+import { useNotification } from "../../notification";
 
 const ScheduleSettings: React.FC = () => {
-  const [feedback, showFeedback] = useState(false);
   const scheduleSettings = useStore((store) => store.scheduleSettings);
   const { register, handleSubmit } = useForm<ScheduleSettingsData>({
     defaultValues: scheduleSettings,
   });
+  const { showFeedback } = useNotification();
 
-  const changeSettings = useCallback((scheduleSettings: ScheduleSettingsData) => {
-    scheduleService.changeSettings(scheduleSettings)
-    showFeedback(true);
-  }, [])
+  const changeSettings = useCallback(
+    (scheduleSettings: ScheduleSettingsData) => {
+      scheduleService.changeSettings(scheduleSettings);
+      showFeedback({ message: "Zapisano!" });
+    },
+    []
+  );
 
   return (
     <Stack component="form" onSubmit={handleSubmit(changeSettings)} gap={1}>
       <Stack gap={1} direction="row">
         <TextField
+          sx={{
+            minWidth: "8em",
+          }}
           type="date"
           label="Data rozpoczęcia"
           InputLabelProps={{
@@ -33,6 +39,7 @@ const ScheduleSettings: React.FC = () => {
           {...register("firstDayDate")}
         />
         <TextField
+          sx={{ minWidth: "5em" }}
           type="time"
           label="Start"
           InputLabelProps={{
@@ -41,6 +48,7 @@ const ScheduleSettings: React.FC = () => {
           {...register("startTime")}
         />
         <TextField
+          sx={{ minWidth: "5em" }}
           type="time"
           label="Koniec"
           InputLabelProps={{
@@ -52,7 +60,6 @@ const ScheduleSettings: React.FC = () => {
       <Button type="submit" variant="contained">
         Zapisz
       </Button>
-      <Snackbar open={feedback} onClose={() => showFeedback(false)} autoHideDuration={2000}><Alert severity="success">Zapisano!</Alert></Snackbar>
     </Stack>
   );
 };

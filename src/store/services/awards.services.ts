@@ -13,6 +13,30 @@ class AwardsService {
     return newAward;
   }
 
+  delete(id: number): void {
+    this.store.setValue((value) => ({
+      ...value,
+      awards: value.awards.filter((award) => award.id !== id),
+    }));
+  }
+
+  changeIndex(id: number, index: number): number {
+    let newIndex = index;
+    this.store.setValue((value) => {
+      const newAwards = [...value.awards];
+      const indexEl = value.awards[index];
+      const awardIndex = value.awards.findIndex((award) => award.id === id);
+      if (!indexEl || awardIndex < 0) {
+        newIndex = awardIndex;
+        return value;
+      }
+      newAwards[index] = value.awards[awardIndex];
+      newAwards[awardIndex] = indexEl;
+      return { ...value, awards: newAwards };
+    });
+    return newIndex;
+  }
+
   private getNewId() {
     const awardIds = this.store.getValue().awards.map((award) => award.id);
     let newId = 1;

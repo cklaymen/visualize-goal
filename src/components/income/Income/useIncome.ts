@@ -32,11 +32,12 @@ const useIncome = (): ReturnValue | null => {
       return null;
     }
     const workedHours = dayjs.duration(workedTime).asHours();
+    const capital = incomeSettings.capital;
     return {
-      netto: incomeSettings.hourlyRate * workedHours,
-      taxed: taxedHourlyRate! * workedHours,
+      netto: incomeSettings.hourlyRate * workedHours + capital,
+      taxed: taxedHourlyRate! * workedHours + capital,
     };
-  }, [workedTime, taxedHourlyRate]);
+  }, [workedTime, taxedHourlyRate, incomeSettings]);
 };
 
 export default useIncome;

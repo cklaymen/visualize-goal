@@ -6,21 +6,24 @@ import {
 } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom/client";
+
 import App from "./App";
+import { NotificationProvider } from "./components/notification";
 
 const darkTheme = createTheme({
   palette: {
+    primary: { main: "#FFCB05" },
     mode: "dark",
   },
   components: {
     MuiBackdrop: {
       styleOverrides: {
         root: {
-          backdropFilter: "blur(2px)"
-        }
-      }
-    }
-  }
+          backdropFilter: "blur(2px)",
+        },
+      },
+    },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -34,7 +37,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         }}
       />
       <CssBaseline enableColorScheme />
-      <App />
+      <NotificationProvider>
+        <App />
+      </NotificationProvider>
     </ThemeProvider>
   </React.StrictMode>
 );
