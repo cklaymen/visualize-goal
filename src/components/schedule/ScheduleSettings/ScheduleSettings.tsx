@@ -20,8 +20,7 @@ const ScheduleSettings: React.FC = () => {
 
   const changeSettings = useCallback(
     (scheduleSettings: ScheduleSettingsData) => {
-      console.log(scheduleSettings);
-      // scheduleService.changeSettings(scheduleSettings);
+      scheduleService.changeSettings(scheduleSettings);
       showFeedback({ message: "Zapisano!" });
     },
     []
@@ -33,27 +32,48 @@ const ScheduleSettings: React.FC = () => {
         <Controller
           control={control}
           name="firstDayDate"
-          render={({ field }) => (
+          rules={{ required: true }}
+          render={({
+            field: { value, ...restField },
+            fieldState: { error },
+          }) => (
             <DatePicker
               label="Data rozpoczęcia"
               inputFormat="YYYY-MM-DD"
-              renderInput={(params) => <TextField {...params} />}
-              {...field}
+              value={value || null}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  error={!!error}
+                  helperText={error?.message}
+                />
+              )}
+              {...restField}
             />
           )}
         />
         <Controller
           control={control}
           name="startTime"
-          render={({ field: { onChange, value, ...restField } }) => {
+          rules={{ required: true }}
+          render={({
+            field: { onChange, value, ...restField },
+            fieldState: { error },
+          }) => {
             return (
               <TimePicker
                 label="Start"
                 inputFormat="HH:mm"
                 ampm={false}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={!!error}
+                    helperText={error?.message}
+                  />
+                )}
                 onChange={(newValue) => onChange(newValue?.format("HH:mm"))}
-                value={dayjs(value, "HH:mm")}
+                value={value ? dayjs(value, "HH:mm") : null}
                 {...restField}
               />
             );
@@ -62,14 +82,24 @@ const ScheduleSettings: React.FC = () => {
         <Controller
           control={control}
           name="endTime"
-          render={({ field: { onChange, value, ...restField } }) => (
+          rules={{ required: true }}
+          render={({
+            field: { onChange, value, ...restField },
+            fieldState: { error },
+          }) => (
             <TimePicker<Dayjs>
               label="Koniec"
               inputFormat="HH:mm"
               ampm={false}
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  error={!!error}
+                  helperText={error?.message}
+                />
+              )}
               onChange={(newValue) => onChange(newValue?.format("HH:mm"))}
-              value={dayjs(value, "HH:mm")}
+              value={value ? dayjs(value, "HH:mm") : null}
               {...restField}
             />
           )}
