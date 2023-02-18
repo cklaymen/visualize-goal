@@ -27,7 +27,7 @@ const AddAward: React.FC = () => {
       gap={1}
       onSubmit={handleSubmit(addAward)}
     >
-      <TextField label="Tytuł" {...register("title")} />
+      <TextField label="Tytuł" {...register("title", { required: true })} />
       <TextField
         label="Koszt"
         type="number"
@@ -35,9 +35,13 @@ const AddAward: React.FC = () => {
           endAdornment: <InputAdornment position="end">PLN</InputAdornment>,
         }}
         inputProps={{ step: "0.01" }}
-        {...register("cost", { valueAsNumber: true })}
+        {...register("cost", { valueAsNumber: true, required: true })}
       />
-      <TextField label="Obrazek" placeholder="URL" {...register("imageUrl")} />
+      <TextField
+        label="Obrazek"
+        placeholder="URL"
+        {...register("imageUrl", { required: true })}
+      />
       <Button type="submit" variant="contained">
         Dodaj
       </Button>
