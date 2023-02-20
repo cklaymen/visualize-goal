@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
+
 import { ScheduleSettings } from "../../../../../store";
 
 function getHoursAndMinutes(time: string): [number, number] {
@@ -45,58 +46,32 @@ function getFullDayDateRangeTime(
   return totalTime;
 }
 
-function getWorkedTime(
-  from: Dayjs,
-  to: Dayjs,
-  startTime: string,
-  endTime: string
-) {
-  const toStart = setDateTime(to.clone(), startTime);
-  const toEnd = setDateTime(to.clone(), endTime);
-  const defaultDayWorkedTime = toEnd.diff(toStart);
-
-  if (to.isBefore(toEnd)) {
-    const dayBeforeToDate = dayjs().subtract(1, "day");
-    let totalTime = getFullDayDateRangeTime(
-      from,
-      dayBeforeToDate,
-      defaultDayWorkedTime
-    );
-    totalTime += getDateTime(to) ?? to.diff(toStart);
-    return totalTime;
-  }
-
-  return getFullDayDateRangeTime(from, to, defaultDayWorkedTime);
-}
-
 export function getPastDaysWorkedTime(scheduleSettings?: ScheduleSettings) {
   if (!scheduleSettings) {
     return 0;
   }
-  return getWorkedTime(
-    dayjs(scheduleSettings.firstDayDate, "YYYY-MM-DD"),
-    dayjs().subtract(1, "day").endOf("day"),
-    scheduleSettings.startTime,
-    scheduleSettings.endTime
-  );
+  const { startTime, endTime } = scheduleSettings;
+  const now = dayjs();
+  const start = setDateTime(now, startTime);
+  const end = setDateTime(now, endTime);
+  const defaultDayWorkedTime = end.diff(start);
+
+  const firstDay = dayjs(scheduleSettings.firstDayDate, "YYYY-MM-DD");
+  const yesterday = dayjs().subtract(1, "day");
+  return getFullDayDateRangeTime(firstDay, yesterday, defaultDayWorkedTime);
 }
 
 export function getTodayWorkedTime(scheduleSettings?: ScheduleSettings) {
   if (!scheduleSettings) {
     return 0;
   }
-  return getWorkedTime(
-    dayjs().startOf("day"),
-    dayjs(),
-    scheduleSettings.startTime,
-    scheduleSettings.endTime
-  );
+  const { startTime, endTime } = scheduleSettings;
+  const now = dayjs();
+  const toStart = setDateTime(now, startTime);
+  const toEnd = setDateTime(now, endTime);
+
+  if (now.isBefore(toEnd)) {
+    return now.diff(toStart);
+  }
+  return toEnd.diff(toStart);
 }
-
-// export function timeToStartWork(): number | null {
-//   const now = dayjs();
-//   const isWorkingDate = getIsWorkingDate(now);
-//   if (!isWorkingDate) {
-
-//   }
-// }

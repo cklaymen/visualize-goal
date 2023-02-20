@@ -10,7 +10,7 @@ import {
 const useWorkedTime = (updateIntervalInMs = 1000) => {
   const scheduleSettings = useStore((value) => value.scheduleSettings);
   const [todayWorkedTime, setTodayWorkedTime] = useState<number>(
-    getTodayWorkedTime()
+    getTodayWorkedTime(scheduleSettings)
   );
   const pastDaysWorkedTime = useMemo(
     () => getPastDaysWorkedTime(scheduleSettings),
