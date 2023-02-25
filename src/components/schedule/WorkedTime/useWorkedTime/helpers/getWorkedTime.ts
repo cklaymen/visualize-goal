@@ -67,11 +67,14 @@ export function getTodayWorkedTime(scheduleSettings?: ScheduleSettings) {
   }
   const { startTime, endTime } = scheduleSettings;
   const now = dayjs();
+  if (!getIsWorkingDate(now)) {
+    return 0;
+  }
   const toStart = setDateTime(now, startTime);
   const toEnd = setDateTime(now, endTime);
 
   if (now.isBefore(toEnd)) {
-    return now.diff(toStart);
+    return toStart.diff(now);
   }
   return toEnd.diff(toStart);
 }
