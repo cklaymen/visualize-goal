@@ -71,10 +71,13 @@ export function getTodayWorkedTime(scheduleSettings?: ScheduleSettings) {
     return 0;
   }
   const toStart = setDateTime(now, startTime);
+  if (now.isBefore(toStart)) {
+    return 0;
+  }
   const toEnd = setDateTime(now, endTime);
 
   if (now.isBefore(toEnd)) {
-    return toStart.diff(now);
+    return now.diff(toStart);
   }
   return toEnd.diff(toStart);
 }
