@@ -1,14 +1,17 @@
-# Vite + React
+# Visualize Goals
 
-This is a [Vite](https://vitejs.dev) project together with React.
+Used: Vite + React, MUI
 
-[![Edit in CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/github/codesandbox/codesandbox-template-vite-react/main)
+Simple application used to visualize worked time, income and the progress in achieving goals. Now only in Polish language.
 
-[Configuration](https://codesandbox.io/docs/projects/learn/setting-up/tasks) has been added to optimize it for [CodeSandbox Projects](https://codesandbox.io/p/dashboard).
+Demo: https://visualize-goal.vercel.app/
 
-## Resources
+https://user-images.githubusercontent.com/13498526/222890508-87c97969-b569-402d-9893-96917ce18f79.mp4
 
-- [CodeSandbox Projects — Docs](https://codesandbox.io/docs/projects)
-- [CodeSandbox — Discord](https://discord.gg/Ggarp3pX5H)
-- [Vite — GitHub](https://github.com/vitejs/vite)
-- [Vite — Docs](https://vitejs.dev/guide/)
+
+## Roadmap
+
+- Add days off and nonstandard working days/hours
+- Add costs/expenses (one time and recurring)
+- Add support for monthly income
+- Add support for English language
