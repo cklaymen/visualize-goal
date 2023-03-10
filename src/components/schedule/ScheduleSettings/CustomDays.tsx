@@ -9,11 +9,12 @@ import {
   Alert,
 } from "@mui/material";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { scheduleService, ScheduleSettings } from "../../../store";
+import { CustomHoursDay } from "../../../store/models/scheduleSettings";
 
 const CustomDays: React.FC = () => {
   const {
@@ -32,6 +33,7 @@ const CustomDays: React.FC = () => {
     rules: {
       validate: {
         unique: (values) => {
+          console.log(values);
           if (
             values.some(
               (value) =>
@@ -66,7 +68,7 @@ const CustomDays: React.FC = () => {
                 ...customDayField,
                 startTime: getValues("startTime"),
                 endTime: getValues("endTime"),
-              });
+              } as CustomHoursDay);
             }
           };
           return (
@@ -100,7 +102,7 @@ const CustomDays: React.FC = () => {
                 name={`customDays.${index}.date`}
                 rules={{ required: true }}
                 render={({
-                  field: { value, ...restField },
+                  field: { value, onChange, ...restField },
                   fieldState: { error },
                 }) => (
                   <DatePicker
@@ -115,6 +117,9 @@ const CustomDays: React.FC = () => {
                         helperText={error?.message}
                       />
                     )}
+                    onChange={(newValue: Dayjs | null) => {
+                      onChange(newValue?.format("YYYY-MM-DD"));
+                    }}
                     {...restField}
                   />
                 )}
