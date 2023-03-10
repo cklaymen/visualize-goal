@@ -1,4 +1,5 @@
 import { ScheduleSettings } from "../models";
+import { CustomDay, CustomHoursDay, FreeDay } from "../models/scheduleSettings";
 import { store, Store } from "../setup";
 
 class ScheduleService {
@@ -9,6 +10,14 @@ class ScheduleService {
       ...value,
       scheduleSettings,
     }));
+  }
+
+  isFreeDay(customDay: CustomDay): customDay is FreeDay {
+    return !("startTime" in customDay);
+  }
+
+  isCustomHoursDay(customDay: CustomDay): customDay is CustomHoursDay {
+    return "startTime" in customDay;
   }
 }
 
