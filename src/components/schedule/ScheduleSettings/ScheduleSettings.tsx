@@ -28,7 +28,12 @@ const ScheduleSettings: React.FC<DialogProps> = (props) => {
 
   const changeSettings = useCallback(
     (scheduleSettings: ScheduleSettingsData) => {
-      scheduleService.changeSettings(scheduleSettings);
+      scheduleService.changeSettings({
+        ...scheduleSettings,
+        customDays: scheduleSettings.customDays.sort((a, b) =>
+          dayjs(b.date).diff(dayjs(a.date), "days")
+        ),
+      });
       showFeedback({ message: "Zapisano!" });
     },
     [showFeedback]

@@ -33,7 +33,6 @@ const CustomDays: React.FC = () => {
     rules: {
       validate: {
         unique: (values) => {
-          console.log(values);
           if (
             values.some(
               (value) =>
