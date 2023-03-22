@@ -18,7 +18,7 @@ import {
 import { useNotification } from "../../notification";
 import CustomDays from "./CustomDays";
 
-const ScheduleSettings: React.FC<DialogProps> = (props) => {
+const ScheduleSettings: React.FC = () => {
   const scheduleSettings = useStore((store) => store.scheduleSettings);
   const form = useForm<ScheduleSettingsData>({
     defaultValues: scheduleSettings,
