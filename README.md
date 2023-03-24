@@ -11,7 +11,7 @@ https://user-images.githubusercontent.com/13498526/222890508-87c97969-b569-402d-
 
 ## Roadmap
 
-- Add days off and nonstandard working days/hours
-- Add costs/expenses (one time and recurring)
-- Add support for monthly income
-- Add support for English language
+- [x] Add days off and nonstandard working days/hours
+- [ ] Add costs/expenses (one time and recurring)
+- [ ] Add support for monthly income
+- [ ] Add support for English language
