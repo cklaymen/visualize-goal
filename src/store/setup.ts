@@ -30,16 +30,18 @@ function getStoreCache() {
 
 function updateStoreCacheIfNeeded(value: any): any {
   let needUpdate = false;
-  if ("scheduleSettings" in value) {
-    if (!("customDays" in value.scheduleSettings)) {
-      needUpdate = true;
-      value = {
-        ...value,
-        scheduleSettings: {
-          ...value.scheduleSettings,
-          customDays: [],
-        },
-      };
+  if (value) {
+    if ("scheduleSettings" in value) {
+      if (!("customDays" in value.scheduleSettings)) {
+        needUpdate = true;
+        value = {
+          ...value,
+          scheduleSettings: {
+            ...value.scheduleSettings,
+            customDays: [],
+          },
+        };
+      }
     }
   }
   if (needUpdate) {
