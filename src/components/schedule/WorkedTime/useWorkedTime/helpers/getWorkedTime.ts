@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 
-import { ScheduleSettings } from "../../../../../store";
+import { scheduleService, ScheduleSettings } from "../../../../../store";
+import { HoursSchedule } from "../../../../../store/models/scheduleSettings";
 
 function getHoursAndMinutes(time: string): [number, number] {
   return time.split(":").map(Number) as [number, number];
@@ -23,25 +24,34 @@ function getIsWorkingDate(date: Dayjs): boolean {
   return !isWeekend;
 }
 
-function getDateTime(date: Dayjs): number | null {
-  if (!getIsWorkingDate(date)) {
+function getDateWorkTime(
+  scheduleSettings: ScheduleSettings,
+  date: Dayjs
+): number {
+  const dateWorkHoursSchedule = getDateWorkHoursSchedule(
+    scheduleSettings,
+    date
+  );
+  if (!dateWorkHoursSchedule) {
     return 0;
   }
-  return null;
+  const { startTime, endTime } = dateWorkHoursSchedule;
+  const dateStartTime = setDateTime(date, startTime);
+  const dateEndTime = setDateTime(date, endTime);
+  return dateEndTime.diff(dateStartTime);
 }
 
 function getFullDayDateRangeTime(
+  scheduleSettings: ScheduleSettings,
   fromDate: Dayjs,
-  toDate: Dayjs,
-  defaultDayWorkedTime: number
+  toDate: Dayjs
 ): number {
   let totalTime = 0;
   const daysDiff = toDate.diff(fromDate, "days");
   const iterableDate = fromDate.clone();
-  totalTime += getDateTime(iterableDate) ?? defaultDayWorkedTime;
+  totalTime += getDateWorkTime(scheduleSettings, iterableDate);
   for (let i = 1; i <= daysDiff; i++) {
-    totalTime +=
-      getDateTime(iterableDate.add(i, "days")) ?? defaultDayWorkedTime;
+    totalTime += getDateWorkTime(scheduleSettings, iterableDate.add(i, "days"));
   }
   return totalTime;
 }
@@ -50,26 +60,22 @@ export function getPastDaysWorkedTime(scheduleSettings?: ScheduleSettings) {
   if (!scheduleSettings) {
     return 0;
   }
-  const { startTime, endTime } = scheduleSettings;
-  const now = dayjs();
-  const start = setDateTime(now, startTime);
-  const end = setDateTime(now, endTime);
-  const defaultDayWorkedTime = end.diff(start);
 
   const firstDay = dayjs(scheduleSettings.firstDayDate, "YYYY-MM-DD");
   const yesterday = dayjs().subtract(1, "day");
-  return getFullDayDateRangeTime(firstDay, yesterday, defaultDayWorkedTime);
+  return getFullDayDateRangeTime(scheduleSettings, firstDay, yesterday);
 }
 
 export function getTodayWorkedTime(scheduleSettings?: ScheduleSettings) {
   if (!scheduleSettings) {
     return 0;
   }
-  const { startTime, endTime } = scheduleSettings;
   const now = dayjs();
-  if (!getIsWorkingDate(now)) {
+  const dateWorkHoursSchedule = getDateWorkHoursSchedule(scheduleSettings, now);
+  if (!dateWorkHoursSchedule) {
     return 0;
   }
+  const { startTime, endTime } = dateWorkHoursSchedule;
   const toStart = setDateTime(now, startTime);
   if (now.isBefore(toStart)) {
     return 0;
@@ -80,4 +86,28 @@ export function getTodayWorkedTime(scheduleSettings?: ScheduleSettings) {
     return now.diff(toStart);
   }
   return toEnd.diff(toStart);
+}
+
+function getDateWorkHoursSchedule(
+  scheduleSettings: ScheduleSettings,
+  date: Dayjs
+): HoursSchedule | null {
+  if (!getIsWorkingDate(date)) {
+    return null;
+  }
+  const { startTime, endTime, customDays } = scheduleSettings;
+  const customDay = customDays.find((it) => date.isSame(it.date, "date"));
+  if (customDay) {
+    if (scheduleService.isCustomHoursDay(customDay)) {
+      return {
+        startTime: customDay.startTime,
+        endTime: customDay.endTime,
+      };
+    }
+    return null;
+  }
+  return {
+    startTime,
+    endTime,
+  };
 }
